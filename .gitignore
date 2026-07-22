@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Generated application output
+dist-main/
+dist-renderer/
+release/
+coverage/
+out/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.p12
+*.key
+
+# Local AI/editor state
+.agents/
+.codex/
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+npm-debug.log*
+*.tmp
+*.swp
+
+# Packaged artifacts
+*.AppImage
+*.deb
+*.dmg
+*.exe
+
+# Operating systems
+.DS_Store
+Thumbs.db

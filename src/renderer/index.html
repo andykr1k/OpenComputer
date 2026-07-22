@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>OpenComputer</title>
+  </head>
+  <body>
+    <main id="app" class="app collapsed" aria-live="polite">
+      <button id="orb" class="orb" type="button" aria-label="Open OpenComputer" title="OpenComputer">
+        <span class="orb-core"><span class="orb-spark"></span></span>
+        <span class="orb-ring ring-one"></span>
+        <span class="orb-ring ring-two"></span>
+      </button>
+
+      <div class="capture-indicator" aria-hidden="true"><span></span>Observing</div>
+
+      <section id="panel" class="panel" aria-label="OpenComputer chat" hidden>
+        <header class="panel-header">
+          <div class="identity">
+            <span class="mini-orb"><i></i></span>
+            <div>
+              <strong>OpenComputer</strong>
+              <span id="status"><i></i> Local</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button id="settings-button" class="icon-button" type="button" aria-label="Model settings" title="Model settings">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.4a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8Zm8-3.4c0-.5-.1-1-.2-1.5l2-1.5-2-3.5-2.5 1a9 9 0 0 0-2.6-1.5L14.3 2h-4.1L9.8 5a9 9 0 0 0-2.6 1.5l-2.5-1-2 3.5 2 1.5a8 8 0 0 0 0 3l-2 1.5 2 3.5 2.5-1A9 9 0 0 0 9.8 19l.4 3h4.1l.4-3a9 9 0 0 0 2.6-1.5l2.5 1 2-3.5-2-1.5c.1-.5.2-1 .2-1.5Z"/></svg>
+            </button>
+            <button id="collapse-button" class="icon-button" type="button" aria-label="Collapse" title="Collapse">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11h14v2H5z"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <section id="chat-view" class="view chat-view">
+          <div id="messages" class="messages">
+            <article class="message assistant intro">
+              <div class="message-avatar"><span></span></div>
+              <div class="bubble">
+                <p>What can I help you get done?</p>
+                <small id="intro-detail">I’ll ask before controlling your desktop.</small>
+              </div>
+            </article>
+          </div>
+          <div id="activity" class="activity hidden"><span></span><p>Thinking</p></div>
+          <div class="chat-toolbar">
+            <div class="permission-label">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4.5 5v5.7c0 4.8 3.2 9.2 7.5 10.6 4.3-1.4 7.5-5.8 7.5-10.6V5L12 2Zm0 2.2 5.5 2.2v4.3c0 3.7-2.3 7.1-5.5 8.4-3.2-1.3-5.5-4.7-5.5-8.4V6.4L12 4.2Z"/></svg>
+              <span>Desktop control</span>
+            </div>
+            <div id="quick-permission" class="permission-toggle compact" role="group" aria-label="Desktop permission mode">
+              <button type="button" data-permission="ask" aria-pressed="true">Ask</button>
+              <button type="button" data-permission="automatic" aria-pressed="false">Auto</button>
+            </div>
+          </div>
+          <form id="composer" class="composer">
+            <textarea id="prompt" rows="1" maxlength="8000" placeholder="Ask OpenComputer…" aria-label="Message"></textarea>
+            <button id="send-button" class="send-button" type="submit" aria-label="Send">
+              <span class="send-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 14-7-4.5 14-3-5-6.5-2Zm6.8.1 2.3 3.8 2.3-7.1-4.6 3.3Z"/></svg></span>
+              <span class="stop-icon" aria-hidden="true"><i></i></span>
+            </button>
+          </form>
+          <p id="composer-hint" class="hint">Enter to send · Shift+Enter for a new line</p>
+        </section>
+
+        <section id="settings-view" class="view settings-view hidden">
+          <div class="settings-title">
+            <button id="settings-back" class="back-button" type="button" aria-label="Back">←</button>
+            <div><h1>Model settings</h1><p>OpenAI-compatible endpoints</p></div>
+          </div>
+          <form id="settings-form">
+            <label>Provider
+              <select id="provider-mode">
+                <option value="local">Local vLLM</option>
+                <option value="remote">Remote API</option>
+              </select>
+            </label>
+            <label>Endpoint
+              <input id="base-url" type="url" spellcheck="false" required />
+            </label>
+            <label>Model
+              <input id="model" type="text" spellcheck="false" required />
+            </label>
+            <label>API key <span>optional for local</span>
+              <input id="api-key" type="password" autocomplete="off" />
+            </label>
+            <div class="settings-field permission-setting">
+              <div class="field-heading">
+                <span>Desktop control</span>
+                <small>Choose how actions are authorized</small>
+              </div>
+              <div id="settings-permission" class="permission-toggle detailed" role="group" aria-label="Desktop permission mode">
+                <button type="button" data-permission="ask" aria-pressed="true">
+                  <span class="option-icon">✓</span>
+                  <span><strong>Ask first</strong><small>Approve each desktop action</small></span>
+                </button>
+                <button type="button" data-permission="automatic" aria-pressed="false">
+                  <span class="option-icon">↗</span>
+                  <span><strong>Automatic</strong><small>Run actions without prompts</small></span>
+                </button>
+              </div>
+            </div>
+            <label>Maximum tool steps
+              <input id="max-tool-steps" type="number" min="1" max="30" />
+            </label>
+            <button class="save-button" type="submit">Save settings</button>
+            <p id="settings-result" class="settings-result"></p>
+          </form>
+        </section>
+
+        <section id="approval" class="approval hidden" role="dialog" aria-modal="true" aria-labelledby="approval-title">
+          <div class="approval-card">
+            <div class="approval-heading">
+              <div class="approval-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4.5 5v5.7c0 4.8 3.2 9.2 7.5 10.6 4.3-1.4 7.5-5.8 7.5-10.6V5L12 2Zm0 3 4.5 1.8v3.9c0 3.1-1.8 6-4.5 7.3-2.7-1.3-4.5-4.2-4.5-7.3V6.8L12 5Z"/></svg>
+              </div>
+              <div><span>Desktop action</span><h2 id="approval-title">Approve this step?</h2></div>
+            </div>
+            <div class="approval-preview"><p id="approval-summary"></p></div>
+            <p class="approval-note">OpenComputer will perform only this action.</p>
+            <div class="approval-actions">
+              <button id="deny-action" type="button" aria-keyshortcuts="Delete Backspace"><span>Not now</span><kbd>Del</kbd></button>
+              <button id="allow-action" type="button" aria-keyshortcuts="Enter"><span>Allow once</span><kbd>Enter</kbd></button>
+            </div>
+            <button id="stop-approval" class="stop-task-link" type="button">Stop this task</button>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+name: Feature request
+description: Propose a focused improvement to OpenComputer.
+title: "[Feature]: "
+labels: [enhancement, needs-triage]
+body:
+  - type: checkboxes
+    attributes:
+      label: Existing work
+      options:
+        - label: I searched existing issues, pull requests, and the roadmap.
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Problem
+      description: Describe the user problem before describing a solution.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Proposed behavior
+      description: Explain the smallest useful version of this feature.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Safety and privacy impact
+      description: Could this add capabilities, external state changes, credentials, screenshots, or new trusted components?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Alternatives considered
+
+  - type: dropdown
+    attributes:
+      label: Platforms
+      multiple: true
+      options:
+        - Linux
+        - Windows
+        - macOS
+        - All platforms
+    validations:
+      required: true

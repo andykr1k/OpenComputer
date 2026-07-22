@@ -1,0 +1,87 @@
+name: Bug report
+description: Report reproducible incorrect behavior in OpenComputer.
+title: "[Bug]: "
+labels: [bug, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Remove API keys, personal screenshots, and sensitive model output before submitting.
+
+  - type: checkboxes
+    attributes:
+      label: Safety check
+      options:
+        - label: This report does not contain credentials or private screen content.
+          required: true
+        - label: This is not a security vulnerability that should be reported privately.
+          required: true
+
+  - type: input
+    attributes:
+      label: OpenComputer version or commit
+      placeholder: v0.1.0 or commit SHA
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Operating system
+      options:
+        - Linux X11
+        - Linux Wayland
+        - Windows
+        - macOS
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Desktop environment and version
+      placeholder: Ubuntu 26.04 GNOME, Windows 11 24H2, macOS 16, etc.
+
+  - type: input
+    attributes:
+      label: Model and server
+      placeholder: RedHatAI/Qwen3.5-9B-quantized.w4a16 with vLLM 0.x
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Permission mode
+      options:
+        - Ask first
+        - Automatic
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: Include the exact error and what OpenComputer did.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start the model with...
+        2. Start OpenComputer with...
+        3. Send the request...
+        4. Observe...
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Sanitized logs or additional context
+      render: shell

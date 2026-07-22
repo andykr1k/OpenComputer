@@ -1,0 +1,100 @@
+{
+  "name": "opencomputer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An open-source, local-first computer-use agent for Linux, Windows, and macOS.",
+  "author": "Andrew Krikorian and OpenComputer contributors",
+  "license": "MIT",
+  "homepage": "https://github.com/andykr1k/OpenComputer#readme",
+  "bugs": {
+    "url": "https://github.com/andykr1k/OpenComputer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andykr1k/OpenComputer.git"
+  },
+  "keywords": [
+    "computer-use",
+    "desktop-agent",
+    "electron",
+    "local-llm",
+    "multimodal",
+    "qwen",
+    "vllm"
+  ],
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10.0.0"
+  },
+  "packageManager": "npm@10.9.4",
+  "main": "dist-main/main/main.js",
+  "type": "module",
+  "scripts": {
+    "model:start": "./scripts/start-vllm.sh",
+    "dev": "npm run build:main && concurrently -k \"vite\" \"wait-on tcp:5173 && cross-env VITE_DEV_SERVER_URL=http://127.0.0.1:5173 electron .\"",
+    "start": "npm run build && electron .",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build:renderer": "vite build",
+    "build": "npm run typecheck && npm run build:main && npm run build:renderer",
+    "typecheck": "tsc -p tsconfig.main.json --noEmit && tsc -p tsconfig.renderer.json --noEmit",
+    "test": "vitest run",
+    "dist": "npm run build && electron-builder",
+    "dist:linux": "npm run build && electron-builder --linux",
+    "dist:windows": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "@nut-tree-fork/nut-js": "4.2.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^43.2.0",
+    "electron-builder": "^26.0.12",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.6",
+    "vitest": "^3.2.4",
+    "wait-on": "^8.0.3"
+  },
+  "build": {
+    "appId": "ai.opencomputer.desktop",
+    "productName": "OpenComputer",
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/@nut-tree-fork/**"
+    ],
+    "files": [
+      "dist-main/**/*",
+      "dist-renderer/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "extendInfo": {
+        "NSAccessibilityUsageDescription": "OpenComputer needs Accessibility access when you approve mouse and keyboard actions.",
+        "NSScreenCaptureUsageDescription": "OpenComputer needs Screen Recording access to understand what is visible on your desktop."
+      }
+    }
+  }
+}
